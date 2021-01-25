@@ -1,3 +1,5 @@
+# This Python script counts the frequencies of characters in a text file, or multiple files.
+
 import sys
 
 # Create alphabet list of lowercase letters
@@ -9,6 +11,12 @@ for letter in range(97, 123):
 alphabetUpper = []
 for letter in range(65, 91):
     alphabetUpper.append(chr(letter))
+
+# All possible letters
+alphabetCombined = alphabetUpper
+for letter in alphabetLower:
+    alphabetCombined.append(letter)
+
 
 # Vowels
 # Ignore Case
@@ -22,7 +30,7 @@ for letter in range(65, 91):
 #   python count.py file_1.txt file_2.txt
 
 def help():
-    print()
+    print('------------------------------------------------------------------------')
     print("-c :: an optional flag that distinguishes between upper and lower case.")
     print("      For example, the file 'aA' would count one 'a' and one 'A'.")
     print("-l :: an optional flag with an argument, that only prints out the frequencies of the characters in the argument letters.")
@@ -30,30 +38,33 @@ def help():
     print("-z :: an optional flag that prints a row for every character, even when it occurs zero times")
 
 def flags():
-    flags = ''
+    possibleFlags = ['-c', '-l', '-z', '-help']
+    flags = set()
     for i in range(1, len(sys.argv)):
         if 'help' in sys.argv[i]:
             help()
+            flags = 'help'
             break
         elif '-' in sys.argv[i]:
-            flags += str(sys.argv[i])
+            flags.add(sys.argv[i][1:])
+        # elif sys.argv[i] not in possibleFlags:
+        #     flags = 'No flags'
     return(flags)
 
 def readFile(flag):
     fileList = {}
     for i in range(1,len(sys.argv)):
         if '.txt' in sys.argv[i]:
+            name = sys.argv[i]
             file = open(sys.argv[i], mode='r', encoding='ASCII')
             temp = frequency(file.read(), flag)
-            fileList[i] = temp
-            print(fileList)
+            fileList[name] = temp
+    return(fileList)
 
 
 
 def frequency(text, flag):
-    #userinput = input('What is your name?')
-    #print(f'Hello {userinput}!')
-    if flag == 'n':
+    if flag == 'c':
         text = text.lower()
         frequency = {}
         for letter in text:
@@ -62,7 +73,7 @@ def frequency(text, flag):
                     frequency[letter] = frequency[letter] + 1
                 else:
                     frequency[letter] = 1
-    elif flag == 'c':
+    elif flag == 'n':
         frequency = {}
         for letter in text:
             if letter in alphabetLower or letter in alphabetUpper:
@@ -70,6 +81,10 @@ def frequency(text, flag):
                     frequency[letter] = frequency[letter] + 1
                 else:
                     frequency[letter] = 1
+    elif flag == 'z':
+        frequency = {}
+        zip(frequency, alphabetCombined)
+
     return(frequency)
 
 
@@ -96,17 +111,17 @@ def frequency(text, flag):
 #
 #
 def main():
-    flagList = ''
+    letters = {}
     flagList = flags()
-    # print(flagList)
+    print(flagList)
     # print(sys.argv)
     if "help" in flagList:
         help()
-    elif "-c" in sys.argv:
-        readFile('c')
+    ## No Tags
     elif "-" != sys.argv:
-        readFile('n')
-
+        print(readFile('n'))
+    else:
+        print(readFile(flagList))
     # word = 'Abracadabra!'
     # print(f'Frequency of letters is {frequency(word)}')
 
