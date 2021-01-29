@@ -1,6 +1,11 @@
-# This Python script counts the frequencies of characters in a text file, or multiple files.
+# Created by:           Ahriel Godoy
+# Student ID:           871928876
+# Program Description:  this script counts the frequencies of characters in a text file, or multiple files
+#                       from flags
 
 import sys
+import csv
+import os
 
 # Create alphabet list of lowercase letters
 alphabetLower = []
@@ -18,7 +23,12 @@ for letter in alphabetLower:
     alphabetCombined.append(letter)
 
 
-# Vowels
+# Flag Options:
+
+# -l option:        restrict what characters are printed.
+# -c option:        make the counting case-sensitive. When omitted, defaults to being case-insensitive.
+# -z option:        print out chars that occurred with a frequency of zero. If omitted, chars with a frequency of zero are not printed.
+
 # Ignore Case
 # Count multiple files
 # Print out frequency of zero
@@ -37,93 +47,87 @@ def help():
     print("      For example, '-l aeiou' counts only vowels.")
     print("-z :: an optional flag that prints a row for every character, even when it occurs zero times")
 
+
 def flags():
+    """"This function parses the command line arguments"""
     possibleFlags = ['-c', '-l', '-z', '-help']
+    queryLetters = ""
     flags = set()
     for i in range(1, len(sys.argv)):
-        if 'help' in sys.argv[i]:
-            help()
-            flags = 'help'
-            break
-        elif '-' in sys.argv[i]:
+        if '-' in sys.argv[i]:
             flags.add(sys.argv[i][1:])
-        # elif sys.argv[i] not in possibleFlags:
-        #     flags = 'No flags'
-    return(flags)
+            if '-l' in sys.argv[i]:
+                queryLetters = sys.argv[i+1]
+    flagsLetters = [flags, queryLetters]
+    return(flagsLetters)
 
-def readFile(flag):
-    fileList = {}
+def add_frequencies(d, file, remove_case):
+    """a dictionary d, a file object file, and a boolean remove_case (from -c)"""
+    file = open(file, mode='r', encoding='ASCII')
+    fullText = file.read()
+    flagsLetters = flags()
+    flagSet = flagsLetters[0]
+    if remove_case == True:
+        fullText = fullText.lower()
+    if "z" in flagSet:
+        if remove_case == True:
+            for letter in alphabetLower:
+                d[letter] = 0
+        else:
+            for letter in alphabetCombined:
+                d[letter] = 0
+
+    for letter in fullText:
+        if "l" in flagSet:
+            if letter in flagsLetters[1]:
+                if letter in d:
+                    d[letter] = d[letter] + 1
+                else:
+                    d[letter] = 1
+        else:
+            if letter in alphabetCombined:
+                if letter in d:
+                    d[letter] = d[letter] + 1
+                else:
+                    d[letter] = 1
+    return(d)
+
+def main():
+    flagsLetters = flags()
+    flagSet = flagsLetters[0]
+    """Parse the command line arguments -c, -l, -z by calling function flags()"""
+
+    totalletterFrequencies = {}
+    """"Create an empty dictionary"""
+
+    fileList = []
     for i in range(1,len(sys.argv)):
         if '.txt' in sys.argv[i]:
-            name = sys.argv[i]
-            file = open(sys.argv[i], mode='r', encoding='ASCII')
-            temp = frequency(file.read(), flag)
-            fileList[name] = temp
-    return(fileList)
+            fileList.append(sys.argv[i])
+
+    for i in range(len(fileList)):
+            letterFrequencies = {}
+            file = fileList[i]
+            print(f'File name: {file}')
+            if "c" in flagSet:
+                letterFrequencies = add_frequencies(letterFrequencies, file, False)
+                totalletterFrequencies = add_frequencies(totalletterFrequencies, file, False)
+            else:
+                letterFrequencies = add_frequencies(letterFrequencies, file, True)
+                totalletterFrequencies = add_frequencies(totalletterFrequencies, file, True)
+            for key, value in letterFrequencies.items():
+                print(f'"{key}",{value}')
+            print()
+    print("Total letters in all files:")
+    for key, value in totalletterFrequencies.items():
+        print(f'"{key}",{value}')
 
 
 
-def frequency(text, flag):
-    if flag == 'c':
-        text = text.lower()
-        frequency = {}
-        for letter in text:
-            if letter in alphabetLower:
-                if letter in frequency:
-                    frequency[letter] = frequency[letter] + 1
-                else:
-                    frequency[letter] = 1
-    elif flag == 'n':
-        frequency = {}
-        for letter in text:
-            if letter in alphabetLower or letter in alphabetUpper:
-                if letter in frequency:
-                    frequency[letter] = frequency[letter] + 1
-                else:
-                    frequency[letter] = 1
-    elif flag == 'z':
-        frequency = {}
-        zip(frequency, alphabetCombined)
 
-    return(frequency)
+    """Add the frequencies for each file in the argument list to the dictionary"""
 
 
-
-    # vals = []
-    # for val in sys.argv:
-    #     vals.append(val)
-    # #print(vals)
-    # punctuation = ''
-    # if '-q' in vals:
-    #     punctuation = '?'
-    # elif '-Q' in vals:
-    #     punctuation = '?!'
-    # else:
-    #     punctuation = '!'
-    # if '-n' in val:
-    #     flagIndex = vals.index('-n')
-    #     num = vals[flagIndex+1]
-    #     print(f'Hello, {vals[-1]}{punctuation*int(num)}')
-    # else:
-    #     print(f'Hello, {vals[-1]}{punctuation}')
-
-# def frequency(text):
-#
-#
-def main():
-    letters = {}
-    flagList = flags()
-    print(flagList)
-    # print(sys.argv)
-    if "help" in flagList:
-        help()
-    ## No Tags
-    elif "-" != sys.argv:
-        print(readFile('n'))
-    else:
-        print(readFile(flagList))
-    # word = 'Abracadabra!'
-    # print(f'Frequency of letters is {frequency(word)}')
 
 # ---------------------------------------
 
