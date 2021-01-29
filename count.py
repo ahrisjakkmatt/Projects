@@ -52,7 +52,7 @@ def help():
 
 
 def flags():
-    """"This function parses the command line arguments"""
+    """"This function parses flags from the command line arguments"""
     possibleFlags = ['-c', '-l', '-z', '-help']
     queryLetters = ""
     flags = set()
@@ -69,11 +69,14 @@ def add_frequencies(d, file, remove_case):
     """a dictionary d, a file object file, and a boolean remove_case (from -c)"""
     file = open(file, mode='r', encoding='ASCII')
     fullText = file.read()
+    """flags has to be called from within this function because the function parameters as per rubrik do no allow for the cases of -z and -l"""
     flagsLetters = flags()
     flagSet = flagsLetters[0]
+    """the following line takes care of -c"""
     if remove_case == True:
         fullText = fullText.lower()
     if "z" in flagSet:
+        """create a dictionary with values of 0 prior to counting"""
         if remove_case == True:
             for letter in alphabetLower:
                 d[letter] = 0
@@ -84,6 +87,7 @@ def add_frequencies(d, file, remove_case):
     for letter in fullText:
         if "l" in flagSet:
             if letter in flagsLetters[1]:
+                """flagsLetters[1] is the set of letters from which to limit when -l is called"""
                 if letter in d:
                     d[letter] = d[letter] + 1
                 else:
@@ -110,6 +114,7 @@ def main():
     """"Create an empty dictionary"""
 
     fileList = []
+    """parse the file names"""
     for i in range(1,len(sys.argv)):
         if '.txt' in sys.argv[i]:
             fileList.append(sys.argv[i])
@@ -119,7 +124,9 @@ def main():
             file = fileList[i]
             print(f'File name: {file}')
             if "c" in flagSet:
+                """provide count of letters within the file"""
                 letterFrequencies = add_frequencies(letterFrequencies, file, False)
+                """provide count of letters as a running total"""
                 totalletterFrequencies = add_frequencies(totalletterFrequencies, file, False)
             else:
                 letterFrequencies = add_frequencies(letterFrequencies, file, True)
@@ -131,14 +138,8 @@ def main():
     for key, value in totalletterFrequencies.items():
         print(f'"{key}",{value}')
 
-
-
-
     """Add the frequencies for each file in the argument list to the dictionary"""
-
-
 
 # ---------------------------------------
 
 main()
-
