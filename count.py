@@ -40,7 +40,10 @@ for letter in alphabetLower:
 #   python count.py file_1.txt file_2.txt
 
 def help():
-    print('------------------------------------------------------------------------')
+    print("# Created by:           Ahriel Godoy")
+    print("# Student ID:           871928876")
+    print("# Program Description:  This script counts the frequencies of characters in a text file, or multiple files from flags")
+    print('---------------------------------------------------------------------------------------------------------------------')
     print("-c :: an optional flag that distinguishes between upper and lower case.")
     print("      For example, the file 'aA' would count one 'a' and one 'A'.")
     print("-l :: an optional flag with an argument, that only prints out the frequencies of the characters in the argument letters.")
@@ -53,6 +56,7 @@ def flags():
     possibleFlags = ['-c', '-l', '-z', '-help']
     queryLetters = ""
     flags = set()
+
     for i in range(1, len(sys.argv)):
         if '-' in sys.argv[i]:
             flags.add(sys.argv[i][1:])
@@ -93,6 +97,11 @@ def add_frequencies(d, file, remove_case):
     return(d)
 
 def main():
+
+    if '-help' in sys.argv: #-help flag explains script functionality
+        help()
+        return
+
     flagsLetters = flags()
     flagSet = flagsLetters[0]
     """Parse the command line arguments -c, -l, -z by calling function flags()"""
