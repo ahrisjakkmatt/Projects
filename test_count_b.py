@@ -1,3 +1,8 @@
+# Created by:           Ahriel Godoy
+# Student ID:           871928876
+# Program Description:  this script tests the function returnDict from count_b in the previous project
+#                       given all combinations of flags
+
 import unittest
 import count_b
 
