@@ -71,14 +71,288 @@
 # are 120 points so the player accumulating 61 or more points before, earns 1 set point in the game. At a 60-60 split
 # point set the set is forfeited and replayed.
 
+import random
+import os
+os.system('cls')
+random.seed(10) #remove this seed after testing
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+SUITS = ("Clubs",
+         "Diamonds",
+         "Hearts",
+         "Spades")
+
+RANKS = ("Two", "Three", "Four", "Five", "Six",
+        "Queen", "Jack", "King",
+        "Seven",
+        "Ace")
+
+VALUES = {"Two": (2, 0), "Three": (3, 0), "Four": (4, 0), "Five": (5, 0), "Six": (6, 0),
+               "Queen": (7, 2), "Jack": (8, 3), "King": (9, 4),
+               "Seven": (10, 10),
+               "Ace": (11, 11)}
+
+TRUMP = ""
+
+playing = True
+
+class Card:
+    def __init__(self, rank, suit):
+        self.rank = rank
+        self.suit = suit
+
+        RANK_POINTS = {"Two": (2, 0), "Three": (3, 0), "Four": (4, 0), "Five": (5, 0), "Six": (6, 0),
+                       "Queen": (7, 2), "Jack": (8, 3), "King": (9, 4),
+                       "Seven": (10, 10),
+                       "Ace": (11, 11)}
+
+        #self.order = RANK_POINTS[rank[0]]
+        #self.point = RANK_POINTS[rank[1]]
+
+    def __str__(self):
+        return '['+self.rank + ' of ' +self.suit+']'
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+class Deck:
+    def __init__(self):
+        self.deck = []  # start with an empty list#
+        self.trump = ""
+        print('The deck of Bisca is composed of 40 cards. This is the traditional french deck without the '
+              '8s, 9s, and 10s. There are 40 cards.')
+        for suit in SUITS:
+            for rank in RANKS:
+                self.deck.append(Card(rank, suit))
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    def __str__(self):
+        deck_comp = ''
+        for card in self.deck:
+            deck_comp += '\n '+card.__str__()
+        return 'The deck has '+str(len(self.deck))+' cards: '+deck_comp
+
+    def shuffle(self):
+        print('The deck was shuffled.')
+        print()
+        random.shuffle(self.deck)
+
+    def cut(self):
+        trump = []
+        single_card = random.randint(0, 39)
+        if self.deck[single_card].rank=="Ace" or self.deck[single_card].rank=="Seven":
+            single_card = random.randint(0, 39)
+        else:
+             pass
+        print('The card cut was: '+self.deck[single_card].__str__())
+        print(self.deck[single_card].suit+' are the trump suit.')
+        print('The '+self.deck[single_card].__str__()+' was sent to the bottom of the draw pile facing up.')
+        print()
+        trump.append(self.deck[single_card])
+        temp=self.deck.pop(single_card)
+        self.deck.append(temp)
+        """This is a temp variable may not need"""
+        self.trump = trump[0].suit
+        return self.trump
+
+
+        # print('The trump card is: ' + deck[single_card].__str__())
+        # self.deck.pop(single_card)
+        # return single_card
+
+    def deal(self):
+        single_card = self.deck.pop(0)
+        #player.hand.draw_card.(single_card)
+        return single_card
+
+
+class Hand:
+    def __init__(self, c1, c2, c3):
+        self.cards = [c1, c2, c3]  # start with an empty list as we did in the Deck class
+
+    def draw_card(self, card):
+        print('The '+card.__str__()+' was drawn.')
+        self.cards.append(card)
+        #return card
+        # name = card.rank
+        # self.value += VALUES[name][0]
+
+    def play_card(self, card):
+        self.cards.remove(card)
+
+    def __str__(self):
+        hand_comp = ''
+        for card in self.cards:
+            hand_comp += '\n '+card.__str__()
+        return 'The hand has '+str(len(self.cards))+' cards: '+hand_comp
+
+
+class Player:
+    def __init__(self, name, hand, pile=[]):
+        self.name = name
+        self.hand = hand
+        self.pile = pile
+        self.points = 0
+
+    def __str__(self):
+        #print(self.name + ' has: ' +self.pile.points())
+        hand_comp = ''
+        for card in self.hand.cards:
+            hand_comp += ' ' + card.__str__()
+        return self.name + ' has: ' + hand_comp
+
+
+class Pile:
+    def __init__(self):
+        self.cards = []
+        self.points = 0
+
+    def add_card(self,card):
+        self.cards.append(card)
+
+    def points(self):
+        for card in self.cards:
+            name = card.rank
+            self.points += VALUES[name][0]
+        return str(self.points)+' points'
+
+    def __str__(self):
+        pile_comp = ''
+        for card in self.cards:
+            pile_comp += '\n '+card.__str__()
+        return 'The pile has: '+pile_comp
+
+
+class Draw_Pile:
+    def __init__(self, cards):
+        self.cards = []  # start with an empty list as we did in the Deck class
+
+    def draw_card(self, card):
+        self.pile.pop(card)
+
+    def __str__(self):
+        draw_pile_comp = ''
+        for card in self.card:
+            draw_pile_comp += '\n ' + card.__str__()
+        return 'The hand has: ' + hand_comp
+
+class Points:
+    def __init__(self):
+        self.total = 100  # This can be set to a default value or supplied by a user input
+        self.bet = 0
+
+    def win_bet(self):
+        self.total += self.bet
+
+    def lose_bet(self):
+        self.total - + self.bet
+
+def compare_ranks(card1, card2):
+    suit = card1.suit
+    if card2.suit == suit:
+        if card2.rank[0] > card1.rank[0]:
+            print(f'{card2.__str__()} wins')
+        else:
+            print(f'{card1.__str__()} wins')
+    elif card2.suit == TRUMP:
+        print(f'{card2.__str__()} wins')
+    else:
+        print(f'{card1.__str__()} wins')
+
+def play_from_hand(deck, hand):
+    global playing
+
+    while True:
+        x = input("What card would you like to play? Enter 'a' or 'b' or 'c'")
+
+        if x[0].lower() == 'a':
+            hit(deck, hand)  # hit() function defined above
+
+        elif x[0].lower() == 's':
+            print("Player stands. Dealer is playing.")
+            playing = False
+
+        else:
+            print("Sorry, please try again.")
+            continue
+        break
+
+# test_deck = Deck()
+# print(test_deck)
+# name="King"
+# card=VALUES[name]
+# print(card[0])
+# print(VALUES[name][0])
+
+
+# Create & shuffle the deck, cut, deal three cards to each player
+deck = Deck()
+deck.shuffle()
+#print(deck.__str__())
+#print()
+TRUMP = deck.cut()
+#print()
+#print(deck.__str__())
+#print(deck.trump)
+#print(deck)
+#print(deck.deck[0])
+
+player_name = "Ahriel"
+#player_name = input('Player 1's name:')
+card1 = (deck.deal())
+card2 = (deck.deal())
+card3 = (deck.deal())
+player_hand = Hand(card1, card2, card3)
+p1 = Player(player_name,player_hand)
+print(p1)
+
+dealer_name = "Dealer"
+#dealer_name = input('Player 2's name:')
+card4 = (deck.deal())
+card5 = (deck.deal())
+card6 = (deck.deal())
+dealer_hand = Hand(card4, card5, card6)
+p2 = Player(dealer_name,dealer_hand)
+print(p2)
+
+print()
+print(f'Round 1: {player_name} starts:')
+option1 = input(f'Do you want to play A:{player_hand.cards[0]} or B:{player_hand.cards[1]} or C:{player_hand.cards[2]}')
+option1=option1.lower()
+if option1 == 'a':
+    result1 = player_hand.cards[0]
+elif option1 == 'b':
+    result1 = player_hand.cards[1]
+elif option1 == 'c':
+    result1 = player_hand.cards[2]
+else:
+    print('select correct options') ## TO DO ENFORE OPTIONS
+print(f'{dealer_name}\'s turn:')
+option2 = input(f'Do you want to play A:{dealer_hand.cards[0]} or B:{dealer_hand.cards[1]} or C:{dealer_hand.cards[2]}')
+option2=option2.lower()
+if option2 == 'a':
+    result2 = dealer_hand.cards[0]
+elif option2 == 'b':
+    result2 = dealer_hand.cards[1]
+elif option2 == 'c':
+    result2 = dealer_hand.cards[2]
+else:
+    print('select correct options') ## TO DO ENFORE OPTIONS
+print()
+#print(type(result1))
+#print(result2)
+
+compare_ranks(result1,result2)
+
+#print()
+#print(deck)
+
+"""
+
+while True:
+    print("This is Bisca.")
+
+    # Set up the Player's chips
+    player_chips = Chips()
+
+    # Prompt the Player for their bet
+    take_bet(player_chips)
+
+    # Show cards (but keep one dealer card hidden)
+    show_some(player_hand, dealer_hand)"""
