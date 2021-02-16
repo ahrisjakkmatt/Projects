@@ -308,7 +308,7 @@ def prompt_cards(first_to_play,second_to_play, round=1):
 
     while True:
         option1 = input(
-            f'Does {first_to_play.name} want to play A:{first_to_play.hand.cards[0]} or B:{first_to_play.hand.cards[1]} or C:{first_to_play.hand.cards[2]}')
+            f'Does {first_to_play.name} want to play A:{first_to_play.hand.cards[0]} or B:{first_to_play.hand.cards[1]} or C:{first_to_play.hand.cards[2]}? ')
         if option1[0].lower() == 'a':
             x = 0
             playing = False
@@ -331,7 +331,7 @@ def prompt_cards(first_to_play,second_to_play, round=1):
 
     while True:
         option2 = input(
-            f'Does {second_to_play.name} want to play A:{second_to_play.hand.cards[0]} or B:{second_to_play.hand.cards[1]} or C:{second_to_play.hand.cards[2]}')
+            f'Does {second_to_play.name} want to play A:{second_to_play.hand.cards[0]} or B:{second_to_play.hand.cards[1]} or C:{second_to_play.hand.cards[2]}? ')
         if option2[0].lower() == 'a':
             y = 0
             playing = False
