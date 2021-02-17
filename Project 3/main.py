@@ -72,9 +72,9 @@
 # point set the set is forfeited and replayed.
 
 import random
-import os
-from time import sleep
-os.system('cls')
+# import os
+# from time import sleep
+# os.system('cls')
 
 random.seed(10) #remove this seed after testing
 
@@ -107,6 +107,8 @@ class Card:
                        "Seven": (10, 10),
                        "Ace": (11, 11)}
 
+        self.rankpoints = RANK_POINTS[self.rank][0]
+        self.points = RANK_POINTS[self.rank][1]
         #self.order = RANK_POINTS[rank[0]]
         #self.point = RANK_POINTS[rank[1]]
 
@@ -159,9 +161,12 @@ class Deck:
         # return single_card
 
     def deal(self):
-        single_card = self.deck.pop(0)
+        if len(self.deck)>0:
+            single_card = self.deck.pop(0)
+            return single_card
+        else:
+            return "Deck is empty."
         #player.hand.draw_card.(single_card)
-        return single_card
 
 
 class Hand:
@@ -244,7 +249,7 @@ class Draw_Pile:
         draw_pile_comp = ''
         for card in self.card:
             draw_pile_comp += '\n ' + card.__str__()
-        return 'The hand has: ' + hand_comp
+        return 'The hand has: ' + draw_pile_comp
 
 
 class Points:
@@ -261,239 +266,280 @@ class Points:
 
 def compare_ranks(card1, card2):
     suit = card1.suit
+    # print(f'{card2.__str__()} has {card2.suit} suit and rank {card2.rankpoints}')
+    # print(f'{card1.__str__()} has {card1.suit} suit and rank {card1.rankpoints}')
+    # x=input()
     if card2.suit == suit:
-        if card2.rank[0] > card1.rank[0]:
-            sleep(1)
+        if card2.rankpoints > card1.rankpoints:
+            # sleep(1)
             print(f'{card2.__str__()} beats the {card1.__str__()}.')
-            sleep(1)
+            # sleep(1)
             return False
         else:
-            sleep(1)
+            # sleep(1)
             print(f'{card1.__str__()} beats the {card2.__str__()}.')
-            sleep(1)
+            # sleep(1)
             return True
     elif card2.suit == TRUMP:
-        sleep(1)
+        # sleep(1)
         print(f'{card2.__str__()} is a trump card and wins.')
-        sleep(1)
+        # sleep(1)
         return False
     else:
-        sleep(1)
+        # sleep(1)
         print(f'{card1.__str__()} is the highest of {card1.suit} and wins.')
-        sleep(1)
+        # sleep(1)
         return True
 
-def play_from_hand(deck, hand):
-    global playing
-
-    while True:
-        x = input("What card would you like to play? Enter 'a' or 'b' or 'c'")
-
-        if x[0].lower() == 'a':
-            hit(deck, hand)  # hit() function defined above
-
-        elif x[0].lower() == 's':
-            print("Player stands. Dealer is playing.")
-            playing = False
-
-        else:
-            print("Sorry, please try again.")
-            continue
-        break
+# def play_from_hand(deck, hand):
+#     global playing
+#
+#     while True:
+#         x = input("What card would you like to play? Enter 'a' or 'b' or 'c'")
+#
+#         if x[0].lower() == 'a':
+#             hit(deck, hand)  # hit() function defined above
+#
+#         elif x[0].lower() == 's':
+#             print("Player stands. Dealer is playing.")
+#             playing = False
+#
+#         else:
+#             print("Sorry, please try again.")
+#             continue
+#         break
 
 def prompt_cards(first_to_play,second_to_play, round=1):
     print(f'Round {round}: {first_to_play.name} starts:')
 
     global playing
+    if round <19:
+        while True:
+            option1 = input(
+                f'Does {first_to_play.name} want to play A:{first_to_play.hand.cards[0]} or B:{first_to_play.hand.cards[1]} or C:{first_to_play.hand.cards[2]}? ')
+            if option1[0].lower() == 'a':
+                x = 0
+                playing = False
+            elif option1[0].lower() == 'b':
+                x = 1
+                playing = False
+            elif option1[0].lower() == 'c':
+                x = 2
+                playing = False
+            else:
+                print("Sorry, please try again.")
+                continue
+            break
+        print(f'{first_to_play.name} played {first_to_play.hand.cards[x]}')
+        print()
+        # sleep(1)
+        print(f"{second_to_play.name}'s turn:")
 
-    while True:
-        option1 = input(
-            f'Does {first_to_play.name} want to play A:{first_to_play.hand.cards[0]} or B:{first_to_play.hand.cards[1]} or C:{first_to_play.hand.cards[2]}? ')
-        if option1[0].lower() == 'a':
-            x = 0
-            playing = False
-        elif option1[0].lower() == 'b':
-            x = 1
-            playing = False
-        elif option1[0].lower() == 'c':
-            x = 2
-            playing = False
-        else:
-            print("Sorry, please try again.")
-            continue
-        break
-    print(f'{first_to_play.name} played {first_to_play.hand.cards[x]}')
-    print()
-    sleep(1)
-    print(f"{second_to_play.name}'s turn:")
+        playing = True
 
-    playing = True
+        while True:
+            option2 = input(
+                f'Does {second_to_play.name} want to play A:{second_to_play.hand.cards[0]} or B:{second_to_play.hand.cards[1]} or C:{second_to_play.hand.cards[2]}? ')
+            if option2[0].lower() == 'a':
+                y = 0
+                playing = False
+            elif option2[0].lower() == 'b':
+                y = 1
+                playing = False
+            elif option2[0].lower() == 'c':
+                y = 2
+                playing = False
+            else:
+                print("Sorry, please try again.")
+                continue
+            break
+        print(f'{second_to_play.name} played {second_to_play.hand.cards[y]}')
+        print()
+        return(x,y)
+    elif round==19:
+        while True:
+            option1 = input(
+                f'Does {first_to_play.name} want to play A:{first_to_play.hand.cards[0]} or B:{first_to_play.hand.cards[1]}? ')
+            if option1[0].lower() == 'a':
+                x = 0
+                playing = False
+            elif option1[0].lower() == 'b':
+                x = 1
+                playing = False
+            else:
+                print("Sorry, please try again.")
+                continue
+            break
+        print(f'{first_to_play.name} played {first_to_play.hand.cards[x]}')
+        print()
+        # sleep(1)
+        print(f"{second_to_play.name}'s turn:")
 
-    while True:
-        option2 = input(
-            f'Does {second_to_play.name} want to play A:{second_to_play.hand.cards[0]} or B:{second_to_play.hand.cards[1]} or C:{second_to_play.hand.cards[2]}? ')
-        if option2[0].lower() == 'a':
-            y = 0
-            playing = False
-        elif option2[0].lower() == 'b':
-            y = 1
-            playing = False
-        elif option2[0].lower() == 'c':
-            y = 2
-            playing = False
-        else:
-            print("Sorry, please try again.")
-            continue
-        break
-    print(f'{second_to_play.name} played {second_to_play.hand.cards[y]}')
-    print()
-    sleep(1)
-    #print(type(result1))
-    #print(result2)
-    return(x,y)
+        playing = True
 
-def adjust_hands(first_to_play,second_to_play, round=1, won_last=True):
-    sleep(1)
-    os.system('cls')
-    if won_last==True:
+        while True:
+            option2 = input(
+                f'Does {second_to_play.name} want to play A:{second_to_play.hand.cards[0]} or B:{second_to_play.hand.cards[1]}? ')
+            if option2[0].lower() == 'a':
+                y = 0
+                playing = False
+            elif option2[0].lower() == 'b':
+                y = 1
+                playing = False
+            else:
+                print("Sorry, please try again.")
+                continue
+            break
+        print(f'{second_to_play.name} played {second_to_play.hand.cards[y]}')
+        print()
+        return(x,y)
+    elif round == 20:
+        print(f"Each player only has 1 card left. {first_to_play} starts.")
+        print(f'{first_to_play.name} played {first_to_play.hand.cards[0]}')
+        print(f'{second_to_play.name} played {second_to_play.hand.cards[0]}')
+        return(0,0)
+
+def adjust_hands(first_to_play,second_to_play, round, winner_previous_round):
+    # sleep(1)
+    # os.system('cls')
+    if winner_previous_round==first_to_play:
+        if round>1:
+            print(f'{first_to_play.name} won.')
         x,y=prompt_cards(first_to_play,second_to_play,round)
         if compare_ranks(first_to_play.hand.cards[x],second_to_play.hand.cards[y]) == True:
             first_to_play.pile.add_card(first_to_play.hand.cards[x]), first_to_play.pile.add_card(second_to_play.hand.cards[y])
-            os.system('cls')
+            # os.system('cls')
             print(f"{first_to_play.hand.cards[x]} and {second_to_play.hand.cards[y]} were added to {first_to_play.name}'s pile.")
-            sleep(1)
+            print()
+            winner_this_round=first_to_play
             result=True
         else:
             second_to_play.pile.add_card(first_to_play.hand.cards[x]), second_to_play.pile.add_card(second_to_play.hand.cards[y])
-            os.system('cls')
+            # os.system('cls')
             print(
                 f"{first_to_play.hand.cards[x]} and {second_to_play.hand.cards[y]} were added to {second_to_play.name}'s pile.")
-            sleep(1)
+            print()
+            winner_this_round=second_to_play
             result=False
         first_to_play.hand.cards.pop(x), second_to_play.hand.cards.pop(y)
     else:
+        print(f'{second_to_play.name} won.')
         x,y = prompt_cards(second_to_play, first_to_play, round)
         if compare_ranks(second_to_play.hand.cards[x],first_to_play.hand.cards[y]) == True:
             second_to_play.pile.add_card(second_to_play.hand.cards[x]), second_to_play.pile.add_card(first_to_play.hand.cards[y])
-            os.system('cls')
+            # os.system('cls')
             print(f"{second_to_play.hand.cards[x]} and {first_to_play.hand.cards[y]} were added to {second_to_play.name}'s pile.")
-            sleep(1)
+            print()
+            winner_this_round=second_to_play
             result=True
         else:
             first_to_play.pile.add_card(second_to_play.hand.cards[x]), first_to_play.pile.add_card(first_to_play.hand.cards[y])
-            os.system('cls')
+            # os.system('cls')
             print(
                 f"{second_to_play.hand.cards[x]} and {first_to_play.hand.cards[y]} were added to {first_to_play.name}'s pile.")
-            sleep(1)
+            print()
+            winner_this_round=first_to_play
             result=False
         first_to_play.hand.cards.pop(y), second_to_play.hand.cards.pop(x)
-    return [first_to_play, second_to_play,x,y,result]
+    return [first_to_play, second_to_play,x,y,winner_this_round]
 
 
-# test_deck = Deck()
-# print(test_deck)
-# name="King"
-# card=VALUES[name]
-# print(card[0])
-# print(VALUES[name][0])
+# def choose(a):
+#     pass
 
-os.system('cls')
+
+# os.system('cls')
 print("This is Bisca.")
 print("Created by:           Ahriel Godoy")
-sleep(2)
+print()
+# player_name = input("Who is playing? ")
+# dealer_name = input("And who else? ")
+player_name = "Ahriel"
+dealer_name = "Dealer"
 
 # Create & shuffle the deck, cut, deal three cards to each player
-os.system('cls')
+# os.system('cls')
 print("Create & shuffle the deck, cut, deal three cards to each player")
-sleep(1)
-os.system('cls')
+# sleep(1)
+# os.system('cls')
 deck = Deck()
 deck.shuffle()
-#print(deck.__str__())
-#print()
-#sleep(200)
+# print(deck.__str__())
+
+# # sleep(200)
 TRUMP = deck.cut()
-sleep(2)
+# sleep(2)
 # j=input()
 #print(deck.__str__())
 #print(deck.trump)
 #print(deck)
 #print(deck.deck[0])
 
-# player_name = "Ahriel"
-player_name = input("What is player 1's name? ")
+
+
+# The first three cards are needed to be dealt "hard coded" to initialize the Hand class
 card1 = (deck.deal())
 card2 = (deck.deal())
 card3 = (deck.deal())
 player_hand = Hand(card1, card2, card3)
 p1 = Player(player_name,player_hand)
-print(p1.print_hand())
 print()
-# dealer_name = "Dealer"
-dealer_name = input("What is player 2's name? ")
 card4 = (deck.deal())
 card5 = (deck.deal())
 card6 = (deck.deal())
 dealer_hand = Hand(card4, card5, card6)
 p2 = Player(dealer_name,dealer_hand)
-print(p2.print_hand())
-print()
-sleep(1)
 
-p1,p2,x,y,won=adjust_hands(p1,p2,1)
+# print(p1.print_hand())
+# print(p2.print_hand())
+
+# sleep(1)
+# round 1 has no previous_winner, it is just be predetermined to be player 1
+p1,p2,x,y,winner=adjust_hands(p1,p2,1,p1)
 # result1 = p1.hand.cards[x]
 # result2 = p2.hand.cards[y]
-sleep(1)
-print(p1.print_hand())
-print(p1.print_pile())
-print(p2.print_hand())
-print(p2.print_pile())
+# sleep(1)
+# print(p1.print_hand())
+# print(p1.print_pile())
+# print(p2.print_hand())
+# print(p2.print_pile())
 
 i=1
 while i<18:
     i += 1
-    if won == True:
+    if winner == p1:
         cardA = deck.deal()
         cardB = deck.deal()
         p1.hand.draw_card(cardA)
         p2.hand.draw_card(cardB)
+        print()
     else:
         cardA = deck.deal()
         cardB = deck.deal()
         p1.hand.draw_card(cardB)
         p2.hand.draw_card(cardA)
-    p1, p2, x, y, won = adjust_hands(p1, p2,i, won)
-    sleep(1)
-    os.system('cls')
-    print(p1.print_hand())
-    print(p1.print_pile())
-    print(p2.print_hand())
-    print(p2.print_pile())
-    sleep(2)
+        print()
+    p1, p2, x, y, winner = adjust_hands(p1, p2, i, winner)
+
+
+
     #pause = input()
-    os.system('cls')
-#print(p1.pile)
-#print(p2.pile)
-#print(p1.hand)
-#print(p2.hand)
-
-#print(deck)
-#print(cardA)
-#print(cardB)
-
-
-#print(deck)
-
-"""
-
-while True:
-    print("This is Bisca.")
-
-    # Set up the Player's chips
-    player_chips = Chips()
-
-    # Prompt the Player for their bet
-    take_bet(player_chips)
-
-    # Show cards (but keep one dealer card hidden)
-    show_some(player_hand, dealer_hand)"""
+    # os.system('cls')
+while i<20:
+    i += 1
+    p1, p2, x, y, winner = adjust_hands(p1, p2, i, winner)
+p1_sum=0
+for card in p1.pile.cards:
+    p1_sum+=card.points
+p2_sum=0
+for card in p2.pile.cards:
+    p2_sum+=card.points
+print("Now we total the points in each players pile.")
+print(f"{p1.name} sums the points in his earned pile and gets {p1_sum} points.")
+print(f"{p2.name} sums the points in his earned pile and gets {p2_sum} points.")
+if p1_sum==p2_sum:
+    print("There were 60 points to each player. This set was a draw.")
+elif p1_sum>p2_sum:
+    print(f"{p1.name} had more points and won the set.")
+else:
+    print(f"{p2.name} had more points and won the set.")
