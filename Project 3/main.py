@@ -368,10 +368,11 @@ def prompt_cards(first_to_play,second_to_play, round=1):
     elif round == 20:
         # Last round each player has only 1 card, play is predetermined because the order of play depends on victor of previous round
         print(f"Each player only has 1 card left. {first_to_play} starts.")
+        print()
+        sleep(2)
         print(f'{first_to_play.name} played {first_to_play.hand.cards[0]}')
         print(f'{second_to_play.name} played {second_to_play.hand.cards[0]}')
-        sleep(2)
-        os.system('cls')
+        sleep(3)
         return(0,0)
 
 
@@ -540,19 +541,17 @@ for card in p1.pile.cards:
 p2_sum=0
 for card in p2.pile.cards:
     p2_sum+=card.points # deep copy
-print("Now we total the points in each players pile.")
 print()
-print(f"{p1.name} has the following cards in their pile.")
 print(p1.print_pile()), sleep(2)
 print()
+print(p2.print_pile()), sleep(2), os.system('cls'), print()
+print("Now we total the points in each players pile.")
+sleep(1)
 print(f"{p1.name} sums the points in his earned pile and gets {p1_sum} points.")
 sleep(2)
 print()
-print(f"{p2.name} has the following cards in their pile.")
-print(p2.print_pile()), sleep(2), os.system('cls'), print()
 print(f"{p2.name} sums the points in his earned pile and gets {p2_sum} points.")
 print()
-os.system('cls')
 sleep(2)
 if p1_sum==p2_sum:
     print("There were 60 points to each player. This set was a draw.")
@@ -562,6 +561,9 @@ else:
     print(f"{p2.name} had more points and won the set.")
 sleep(7)
 os.system('cls')
-print("Finishing Credits")
+print()
+sleep(2)
+print()
 sleep(2)
 print("Thank you!")
+sleep(10)
