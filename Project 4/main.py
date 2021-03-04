@@ -149,28 +149,27 @@ def intro(name):
     print(f"{name}, are you ready to play?")
     sleep(2)
     os.system('cls')
-    print("You and I throw the same dice.  If your numbers are higher you win.")
+    print("You and I throw the same dice.  If your numbers are higher, you win.")
     sleep(3)
-    print("If mine are higher I win.  We can also tie.")
+    print("If mine are higher, I will win.  We can also, tie.")
     sleep(3)
     os.system('cls')
-    print(f"You can bet up to  ${amount_to_bankrupt},  {name}.")
+    print(f"You can bet up to ${amount_to_bankrupt} and cash out at any time.")
     sleep(3)
-    print("You choose to cash out at any time.")
-    sleep(2)
-    print("If you win you double your bet.   If I win I take your bet.   If we tie...")
-    sleep(4)
+    print("As long as you don't go ... bankrupt.")
+    sleep(3)
+    print("If you win, you double your bet.   If I win, I make money off your misfortune.   If we tie...")
+    sleep(5)
     print("nothing happens.")
-    sleep(3)
-    print("You can play until you cash out or until you bankrupt.")
     sleep(4)
     print()
-    os.system('cls')
-    print("Lets' pick the dice we will use and ")
+    print()
+    print("Lets' pick the dice we will use and add them to ...")
     sleep(1)
-    print("    add them to our bottom-less cup.")
+    print("our super, big, Gulp-sized cup.")
     sleep(4)
     print()
+    sleep(1)
 
 def play_rounds(max_bet,cup1,cup2,name):
     cashout=max_bet
@@ -200,9 +199,8 @@ def play_rounds(max_bet,cup1,cup2,name):
                     sleep(3)
                     print()
                     print("That's not a lot, you should bet it all.")
-                    sleep(2)
+                    sleep(3)
                     print()
-                    os.system('cls')
                 else:
                     cashout=cashout + bet_amount
                     print(f"You won  ${bet_amount}!!   Now you have  ${cashout}.")
@@ -215,9 +213,9 @@ def play_rounds(max_bet,cup1,cup2,name):
                 print(f"No gas money, no bus money.  {name}, I hope you don't have to walk very far!")
                 sleep(2)
                 break
-            sleep(2)
             print()
             playing = get_binary_int("Would you like to keep playing?\n        YES: 1         NO, Cashout:  0  >>>> ")
+            os.system('cls')
             if playing == 0:
                 break
             bet_amount = prompt_bet()
@@ -228,7 +226,9 @@ def play_rounds(max_bet,cup1,cup2,name):
     print()
     print('Better luck next time!')
     sleep(3)
+    os.system('cls')
     print(f"Thanks for playing, {name}!")
+    sleep(10)
 
 def get_binary_int(prompt):
     while True:
@@ -262,7 +262,7 @@ def prompt_bet():
 def prompt_dice_setup(name):
     print("We can make any die with any number of sides.")
     sleep(5)
-    os.system('cls')
+    print()
     setting_up = True
     die = {}
     new_to_dictionary = True
@@ -317,7 +317,7 @@ os.system('cls')
 print("Welcome to War  (with dice).")
 print()
 sleep(1)
-amount_to_bankrupt = get_int("How much total money do you have?              >>>> ")
+amount_to_bankrupt = get_int("How much total money do you have, to spend, or give away?              >>>> ")
 os.system('cls')
 if amount_to_bankrupt <= 0:
     print("Sorry, that's not enough to play today.")
@@ -340,5 +340,3 @@ else:
     sleep(4)
     os.system('cls')
     play_rounds(amount_to_bankrupt,cup,cup2,name)
-sleep(4)
-os.system('cls')
