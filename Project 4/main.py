@@ -18,7 +18,7 @@ import os
 from time import sleep
 
 os.system('cls')
-random.seed(10) #remove this seed after testing
+# random.seed(10) #remove this seed after testing
 
 class Dice:
     def __init__(self, sides): # Deep copy
@@ -145,31 +145,30 @@ class Cup:
             cup_string=cup_string+("  " + str(v) + "  of (" + str(k) + "-sided) Dice\n")
         return cup_string
 
-def intro(name):
+def intro(amount_to_bankrupt,name):
     print(f"{name}, are you ready to play?")
     sleep(2)
     os.system('cls')
-    print("You and I throw the same dice.  If your numbers are higher, you win.")
+    print("You and I throw the same dice.  If your numbers are higher you win.")
     sleep(3)
-    print("If mine are higher, I will win.  We can also, tie.")
+    print("If my dice are better you lose.  We can also tie.")
     sleep(3)
-    os.system('cls')
+    print()
     print(f"You can bet up to ${amount_to_bankrupt} and cash out at any time.")
-    sleep(3)
-    print("As long as you don't go ... bankrupt.")
-    sleep(3)
-    print("If you win, you double your bet.   If I win, I make money off your misfortune.   If we tie...")
-    sleep(5)
+    sleep(2)
+    print("As long as you don't go bankrupt.")
+    sleep(2)
+    print("If you win, you double your bet.   If not, and we don't tie, I win.  ... If we tie")
+    sleep(4)
     print("nothing happens.")
-    sleep(4)
-    print()
-    print()
-    print("Lets' pick the dice we will use and add them to ...")
     sleep(1)
-    print("our super, big, Gulp-sized cup.")
-    sleep(4)
     print()
     sleep(1)
+    print()
+    print("I have this here Gulp-sized cup that we can add")
+    sleep(1)
+    print("... any dice you can imagine!")
+    sleep(2)
 
 def play_rounds(max_bet,cup1,cup2,name):
     cashout=max_bet
@@ -198,7 +197,7 @@ def play_rounds(max_bet,cup1,cup2,name):
                     print(f"{name}, you lost  ${bet_amount}.   You still have  ${cashout} though.")
                     sleep(3)
                     print()
-                    print("That's not a lot, you should bet it all.")
+                    print("That's not a lot, you not should bet it all.")
                     sleep(3)
                     print()
                 else:
@@ -207,28 +206,31 @@ def play_rounds(max_bet,cup1,cup2,name):
                     sleep(3)
             if cashout == 0:
                 print()
-                print("You lost ... all your money ... Yikes!")
+                print("You lost all your money ... Eeek!")
                 print()
                 sleep(3)
-                print(f"No gas money, no bus money.  {name}, I hope you don't have to walk very far!")
+                print(f"{name}, I hope you don't have to walk very far!")
                 sleep(2)
+                print("I would give you a ride but I can't, I have too much money. I need to go to the bannk!")
+                sleep(4)
                 break
             print()
             playing = get_binary_int("Would you like to keep playing?\n        YES: 1         NO, Cashout:  0  >>>> ")
+            sleep(1)
             os.system('cls')
             if playing == 0:
                 break
             bet_amount = prompt_bet()
-    sleep(3)
-    print()
+    sleep(2)
     print(f'You walk away with ${cashout}.')
-    sleep(3)
+    print()
+    sleep(2)
     print()
     print('Better luck next time!')
-    sleep(3)
-    os.system('cls')
+    sleep(2)
+    print()
     print(f"Thanks for playing, {name}!")
-    sleep(10)
+    sleep(5)
 
 def get_binary_int(prompt):
     while True:
@@ -260,8 +262,7 @@ def prompt_bet():
     return get_int("How much would you like to bet?   >>>> ")
 
 def prompt_dice_setup(name):
-    print("We can make any die with any number of sides.")
-    sleep(5)
+    sleep(1)
     print()
     setting_up = True
     die = {}
@@ -271,7 +272,13 @@ def prompt_dice_setup(name):
         while new_to_dictionary:
             if bool(die):
                 if end_setup == 1:
-                    faces = get_int("How many sides are on the die?           >>>> ")
+                    while True:
+                        faces = get_int("How many sides are on the die?           >>>> ")
+                        if faces < 2:
+                            print("We need more sides than that! (realistically)")
+                            continue
+                        else:
+                            break
                     if faces in die:
                         print(f"  You already setup {die[faces]} die with {faces} sides.")
                         print()
@@ -288,7 +295,14 @@ def prompt_dice_setup(name):
                     print(f"  Sorry, {name} please try '0' or '1'.")
                     continue
             else:
-                faces = get_int("How many sides are on the die?           >>>> ")
+                while True:
+                    faces = get_int("How many sides are on the die?           >>>> ")
+                    if faces < 2:
+                        print("We need more sides than that! (realistically)")
+                        continue
+                    else:
+                        break
+                    faces = get_int("How many sides are on the die?           >>>> ")
                 quantity_of_dice = get_int(f"How many dice with {faces} sides are you using ?           >>>> ")
                 die_temp = {faces: quantity_of_dice}
                 die.update(die_temp)
@@ -312,31 +326,50 @@ def prompt_dice_setup(name):
                         break
     return die
 
-
-os.system('cls')
-print("Welcome to War  (with dice).")
-print()
-sleep(1)
-amount_to_bankrupt = get_int("How much total money do you have, to spend, or give away?              >>>> ")
-os.system('cls')
-if amount_to_bankrupt <= 0:
-    print("Sorry, that's not enough to play today.")
-    sleep(2)
+def main():
     os.system('cls')
-else:
-    print("Ok, you have the chance to walk away rich.")
+    print("Welcome to War  (with dice).")
     sleep(1)
-    print("But your chances are not very good.")
-    sleep(2)
     print()
-    name = input("What is your name again?              >>>> ")
-    os.system('cls')
-    intro(name)
-    dice = prompt_dice_setup(name)
-    cup = Cup(dice)
-    cup2 = Cup(dice)
+    sleep(1)
     print()
-    print(cup)
-    sleep(4)
+    print()
+    print("Created by:           Ahriel Godoy")
+    print()
+    sleep(1)
     os.system('cls')
-    play_rounds(amount_to_bankrupt,cup,cup2,name)
+    print("Hey stranger.  By the looks of you, there is a lot of money in your pocket.")
+    sleep(3)
+    print()
+    amount_to_bankrupt = get_int("How much total money do you have, to spend, or give away?              >>>> ")
+    os.system('cls')
+    if amount_to_bankrupt <= 0:
+        print("Sorry, that's not enough to play today.")
+        sleep(2)
+        os.system('cls')
+    else:
+        print("...")
+        sleep(1)
+        print("With that much you have enough to take the bus.")
+        sleep(2)
+        print("We all start somewhere.")
+        sleep(2)
+        print("I guess.")
+        sleep(2)
+        print()
+        os.system('cls')
+        name = input("What is your name again?              >>>> ")
+        os.system('cls')
+        intro(amount_to_bankrupt,name)
+        dice = prompt_dice_setup(name)
+        cup = Cup(dice)
+        cup2 = Cup(dice)
+        print()
+        print("That is enough to play, the cup is almost full.")
+        sleep(2)
+        print(cup)
+        sleep(4)
+        os.system('cls')
+        play_rounds(amount_to_bankrupt,cup,cup2,name)
+
+main()
