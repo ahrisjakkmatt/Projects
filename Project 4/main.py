@@ -197,13 +197,13 @@ def play_rounds(max_bet,cup1,cup2,name):
                     print(f"{name}, you lost  ${bet_amount}.   You still have  ${cashout} though.")
                     sleep(3)
                     print()
-                    print("That's not a lot, you not should bet it all.")
-                    sleep(3)
+                    print("That's not a lot. Don't bet it all.")
+                    sleep(2)
                     print()
                 else:
                     cashout=cashout + bet_amount
-                    print(f"You won  ${bet_amount}!!   Now you have  ${cashout}.")
-                    sleep(3)
+                    print(f"You won ${bet_amount}!! Now you have ${cashout}.")
+                    sleep(2)
             if cashout == 0:
                 print()
                 print("You lost all your money ... Eeek!")
@@ -211,8 +211,8 @@ def play_rounds(max_bet,cup1,cup2,name):
                 sleep(3)
                 print(f"{name}, I hope you don't have to walk very far!")
                 sleep(2)
-                print("I would give you a ride but I can't, I have too much money. I need to go to the bannk!")
-                sleep(4)
+                print("I would give you a ride but I can't. I have to go to the bank!")
+                sleep(3)
                 break
             print()
             playing = get_binary_int("Would you like to keep playing?\n        YES: 1         NO, Cashout:  0  >>>> ")
@@ -221,15 +221,11 @@ def play_rounds(max_bet,cup1,cup2,name):
             if playing == 0:
                 break
             bet_amount = prompt_bet()
-    sleep(2)
     print(f'You walk away with ${cashout}.')
-    print()
     sleep(2)
-    print()
     print('Better luck next time!')
-    sleep(2)
-    print()
-    print(f"Thanks for playing, {name}!")
+    sleep(1)
+    print(f"Thanks for playing!")
     sleep(5)
 
 def get_binary_int(prompt):
