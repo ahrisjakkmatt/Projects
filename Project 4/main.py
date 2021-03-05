@@ -321,7 +321,7 @@ def prompt_dice_setup(name):
 
 def main():
     os.system('cls')
-    print("Welcome to War  (with dice).")
+    print("Welcome to War  (with dice)")
     sleep(1)
     print()
     sleep(1)
