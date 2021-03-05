@@ -24,55 +24,53 @@ class Dice:
     def __init__(self, sides): # Deep copy
         self.faces = sides
 
-    def __eq__(self, other):
-        if type(self) == type(other):
-            return((self.dice, self.faces)==(other.dice, other.faces_per_dice))
-        else:
-            return NotImplemented
+    """It does not make sense do employ any of these comparison methods, and the add method with dice, only with cups"""
+    # def __eq__(self, other):
+    #     if type(self) == type(other):
+    #         return((self.dice, self.faces)==(other.dice, other.faces_per_dice))
+    #     else:
+    #         return NotImplemented
+    #
+    # def __ne__(self, other):
+    #     if type(self) == type(other):
+    #         return((self.dice, self.faces)==(other.dice, other.faces_per_dice))
+    #     else:
+    #         return NotImplemented
+    #
+    # def __lt__(self, other):
+    #     if type(self) == type(other):
+    #         return((self.dice, self.faces)<(other.dice, other.faces_per_dice))
+    #     else:
+    #         return NotImplemented
+    #
+    # def __gt__(self, other):
+    #     if type(self) == type(other):
+    #         return((self.dice, self.faces)>(other.dice, other.faces_per_dice))
+    #     else:
+    #         return NotImplemented
+    #
+    # def __le__(self, other):
+    #     if type(self) == type(other):
+    #         return((self.dice, self.faces)<=(other.dice, other.faces_per_dice))
+    #     else:
+    #         return NotImplemented
+    #
+    # def __ge__(self, other):
+    #     if type(self) == type(other):
+    #         return((self.dice, self.faces)>=(other.dice, other.faces_per_dice))
+    #     else:
+    #         return NotImplemented
+    #
+    """This also was unnecessary each cup was initialized only once. Matter was neither created nor destroyed.
+    Dice did not fall to the floor."""
+    # def __add__(self, other):
+    #     if type(self) == type(other):
+    #         return Dice(self.dice+other.dice, self.faces)
+    #     else:
+    #         return NotImplemented
 
-    def __ne__(self, other):
-        if type(self) == type(other):
-            return((self.dice, self.faces)==(other.dice, other.faces_per_dice))
-        else:
-            return NotImplemented
 
-    def __lt__(self, other):
-        if type(self) == type(other):
-            return((self.dice, self.faces)<(other.dice, other.faces_per_dice))
-        else:
-            return NotImplemented
-
-    def __gt__(self, other):
-        if type(self) == type(other):
-            return((self.dice, self.faces)>(other.dice, other.faces_per_dice))
-        else:
-            return NotImplemented
-
-    def __le__(self, other):
-        if type(self) == type(other):
-            return((self.dice, self.faces)<=(other.dice, other.faces_per_dice))
-        else:
-            return NotImplemented
-
-    def __ge__(self, other):
-        if type(self) == type(other):
-            return((self.dice, self.faces)>=(other.dice, other.faces_per_dice))
-        else:
-            return NotImplemented
-
-    def __add__(self, other):
-        if type(self) == type(other):
-            return Dice(self.dice+other.dice, self.faces)
-        else:
-            return NotImplemented
-
-    def roll(self):
-        total_value=0
-        for die in self.quantity_of_dice:
-            total_value += die*random.randint(2, self.faces)
-        return total_value
-
-    def __str__(self): # Deep copy
+    def __str__(self):
         return 'Die['+str(self.faces)+']'
 
 class Cup:
@@ -87,21 +85,19 @@ class Cup:
                 dice_list.append(temp.faces)
                 j += 1
         self.size = size
-        self.dictio = dict_dice
-        self.dice_list = dice_list
-        # j=0
-        # while j < len(dice_list):
-        #     self.dice_list = self.dice_list.append(type(dice_list[j]))
-        #     j+=1
-        self.value = 0
+        self.dictio = dict_dice # extra variables used in debugging code
+        self.dice_list = dice_list # perhaps not the most intuitive to create a dictionary, then enum it then >> list
+        self.value = 0 # without rolling the cup has no value
 
-    def roll(self):
+    def roll(self): # only after rolling does each cup have a value (equal to the sum of the sides)
         total_value=0
         for d in self.dice_list:
-            total_value += random.randint(1, d)
+            total_value += random.randint(1, d) # perm. the list, determine # of sides, draw randomomly from [1,side]
         self.value=total_value
         return self.value
 
+    # There are redundancies with using the comparison magic methods. Not all are necessary. In fact, I only needed
+    # the != and < and took care of the scenarios with if/elif/else conditions
     def __eq__(self, other):
         if type(self) == type(other):
             return((self.value)==(other.value))
@@ -294,11 +290,12 @@ def prompt_dice_setup(name):
                 while True:
                     faces = get_int("How many sides are on the die?           >>>> ")
                     if faces < 2:
-                        print("We need more sides than that! (realistically)")
+                        print()
+                        print("We (realistically) need more sides than that! ")
+                        print()
                         continue
                     else:
                         break
-                    faces = get_int("How many sides are on the die?           >>>> ")
                 quantity_of_dice = get_int(f"How many dice with {faces} sides are you using ?           >>>> ")
                 die_temp = {faces: quantity_of_dice}
                 die.update(die_temp)
@@ -356,10 +353,16 @@ def main():
         os.system('cls')
         name = input("What is your name again?              >>>> ")
         os.system('cls')
+        # intro prompt, just some explaining, story, nonsense and jokes
         intro(amount_to_bankrupt,name)
+        # prompt user for the quantities and sides of each dice class, entering into a dictionary
         dice = prompt_dice_setup(name)
+        # construct two identical cups (per components) of dice for each player, but with unique memory locations to
+        # track the values of each cup throw
         cup = Cup(dice)
         cup2 = Cup(dice)
+        # Prompts are implemented to excluded negatives and non-integers, as well as execute the desired outcomes
+        # i.e. play or cashout
         print()
         print("That is enough to play, the cup is almost full.")
         sleep(2)
@@ -368,4 +371,4 @@ def main():
         os.system('cls')
         play_rounds(amount_to_bankrupt,cup,cup2,name)
 
-main()
+main() # call the main function as required per rubrik
