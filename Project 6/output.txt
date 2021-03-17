@@ -1,0 +1,67 @@
+Aurora, CO had the following statistics in 2014: 
+Mean               : 50.0 F
+Standard Deviation : 16.7 F
+Mode               : 26.0 F
+Median             : 48.7 F
+
+Bakersfield, CA had the following statistics in 2014: 
+Mean               : 65.1 F
+Standard Deviation : 14.9 F
+Mode               : 53.9 F
+Median             : 63.9 F
+
+Boston, MA had the following statistics in 2014: 
+Mean               : 51.3 F
+Standard Deviation : 15.7 F
+Mode               : 69.3 F
+Median             : 50.7 F
+
+Tri-Cities, TN had the following statistics in 2014: 
+Mean               : 55.5 F
+Standard Deviation : 15.2 F
+Mode               : 66.2 F
+Median             : 55.2 F
+
+Chicago, IL had the following statistics in 2014: 
+Mean               : 50.0 F
+Standard Deviation : 18.3 F
+Mode               : 67.1 F
+Median             : 50.1 F
+
+COSPRINGS, CO had the following statistics in 2014: 
+Mean               : 48.8 F
+Standard Deviation : 16.4 F
+Mode               : 24.5 F
+Median             : 47.9 F
+
+Houston, TX had the following statistics in 2014: 
+Mean               : 68.9 F
+Standard Deviation : 12.5 F
+Mode               : 75.5 F
+Median             : 69.3 F
+
+Miami, FL had the following statistics in 2014: 
+Mean               : 76.4 F
+Standard Deviation : 6.6 F
+Mode               : 79.6 F
+Median             : 77.3 F
+
+New York, NY had the following statistics in 2014: 
+Mean               : 54.1 F
+Standard Deviation : 15.4 F
+Mode               : 35.7 F
+Median             : 53.4 F
+
+Valdez, AK had the following statistics in 2014: 
+Mean               : 38.9 F
+Standard Deviation : 11.6 F
+Mode               : 27.1 F
+Median             : 37.7 F
+
+
+['Aurora, CO', 'Bakersfield, CA', 'Boston, MA', 'Tri-Cities, TN', 'Chicago, IL', 'COSPRINGS, CO', 'Houston, TX', 'Miami, FL', 'New York, NY', 'Valdez, AK']
+
+   Aurora, CO  Bakersfield, CA  Boston, MA  Tri-Cities, TN  Chicago, IL  COSPRINGS, CO  Houston, TX  Miami, FL  New York, NY  Valdez, AK
+0        26.3             43.2        30.3            33.7         24.2           24.8         48.3       65.5          33.6        25.3
+1        26.2             42.8        30.0            33.3         23.9           24.6         47.8       64.9          33.4        25.3
+2        25.9             42.3        29.8            33.0         23.7           24.4         47.4       64.4          33.1        25.2
